@@ -7,6 +7,7 @@ except ImportError:
     import ConfigParser as configparser
 
 import os
+
 Import("env", "projenv")
 # access to global build environment
 print(env)
@@ -45,7 +46,8 @@ env.AddPostAction("upload", after_upload)
 flash_size = 0
 vect_tab_addr = 0
 
-for define in env['CPPDEFINES']:
+envdefs = env['CPPDEFINES'].copy()
+for define in envdefs:
     if define[0] == "VECT_TAB_ADDR":
         vect_tab_addr = define[1]
     if define[0] == "STM32_FLASH_SIZE":
@@ -55,4 +57,5 @@ print('Use the {0:s} address as the marlin app entry point.'.format(vect_tab_add
 print('Use the {0:d}KB flash version of stm32f103rct6 chip.'.format(flash_size))
 
 import marlin
+
 marlin.custom_ld_script("STM32F103RC_MEEB_3DP.ld")

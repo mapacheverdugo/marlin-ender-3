@@ -2,9 +2,11 @@
 # buildroot/share/PlatformIO/scripts/marlin.py
 # Helper module with some commonly-used functions
 #
-import os,shutil
+import os
+import shutil
 
 from SCons.Script import DefaultEnvironment
+
 env = DefaultEnvironment()
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -17,7 +19,8 @@ def copytree(src, dst, symlinks=False, ignore=None):
             shutil.copy2(s, d)
 
 def replace_define(field, value):
-	for define in env['CPPDEFINES']:
+	envdefs = env['CPPDEFINES'].copy()
+	for define in envdefs:
 		if define[0] == field:
 			env['CPPDEFINES'].remove(define)
 	env['CPPDEFINES'].append((field, value))
